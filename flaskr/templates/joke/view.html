@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}View a Joke{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('joke.my_jokes') }}">My Jokes</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for joke in jokes %}
+    <article class="joke">
+      <header>
+        <div>
+          <h1>Title: {{joke['title']}}</h1>
+          <p>Author Nickname: {{ joke['author_nickname'] }}</p>
+          <p>Body: {{ joke['body'] }}</p>
+          <p>Ratings: {{ joke['ratings'] }} / 10.00</p>
+          <p>Posted Date: {{joke['created'].strftime('%Y-%m-%d')}}</p>
+          {% if g.user['nickname'] == joke['author_nickname'] %}
+            <a class="action" href="{{ url_for('joke.update', joke_id=joke.id) }}">Update</a>
+            <a class="action" href="{{ url_for('joke.delete', joke_id=joke.id) }}">Delete</a>
+          {% endif %}
+          <hr>
+          <form method="post" action="{{ url_for('joke.rate') }}">
+            {% if g.user['nickname'] != joke['author_nickname'] %}
+                <h1>Rate a Joke</h1>
+                <input type="hidden" name="id" value="{{joke.id}}"/>
+                <input type="number" name="ratings" min="0" max="10" value="{{request.form['ratings']}}" step=".01" placeholder="Enter value in between 0.00 to 10.00"  required>
+                <input type="submit" value="Rate">
+            {% endif %}
+          </form>
+        </div>
+      </header>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

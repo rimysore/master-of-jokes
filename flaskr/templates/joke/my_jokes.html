@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}My Jokes{% endblock %}</h1>
+  <a class="action" href="{{ url_for('joke.create') }}">Leave a Joke</a>
+  {% if jokeCount > 0 %}
+    <a class="action" href="{{ url_for('joke.take') }}">Take a Joke</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for joke in jokes %}
+    <article class="joke">
+      <header>
+        <div>
+          <h1><a class="action" href="{{ url_for('joke.view', joke_id=joke.id) }}">{{ joke['title'] }}</a></h1>
+          <div class="about">Ratings: {{joke['ratings']}} / 10.00</div>
+        </div>
+      </header>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

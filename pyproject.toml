@@ -1,0 +1,16 @@
+[project]
+name = "flaskr"
+version = "1.0.0"
+description = "The basic master of joke app"
+dependencies = [
+    "flask",
+    "click",
+    "itsdangerous",
+    "Jinja2",
+    "MarkupSafe",
+    "Werkzeug"
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
